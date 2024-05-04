@@ -1,0 +1,19 @@
+{
+  "name": "berrycinema_server",
+  "version": "1.0.0",
+  "description": "Server for BerryCinema client",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "JB",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.8",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "socket.io": "^4.7.5"
+  }
+}
