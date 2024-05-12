@@ -1,5 +1,7 @@
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
+import VideoPlayerHandler from "./PlayerHandler";
+import { VideoInfoType } from "./../../common/types";
 
 const httpServer = createServer();
 const options = {
@@ -10,9 +12,33 @@ const options = {
 };
 const io = new Server(httpServer, options);
 
+const VideoPlayer = new VideoPlayerHandler();
+
 io.on("connection", (socket: Socket) => {
   console.log("connected");
-  console.log(socket);
+  socket.on("play", () => {
+    try {
+      VideoPlayer.play();
+    } catch (e) {
+      console.log(e.message);
+    }
+  });
+
+  socket.on("stop", () => {
+    try {
+      VideoPlayer.stop();
+    } catch (e) {
+      console.log(e.message);
+    }
+  });
+
+  socket.on("addVideo", (data: VideoInfoType) => {
+    try {
+      VideoPlayer.addVideo(data);
+    } catch (e) {
+      console.log(e.message);
+    }
+  });
 });
 
 httpServer.listen(3000);
