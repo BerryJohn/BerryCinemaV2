@@ -1,7 +1,19 @@
 import { VideoInfoType } from "./../../common/types";
+import { v4 as uuidv4 } from "uuid";
+
 const DURATION = 1000;
 
-class VideoPlayerHandler {
+interface VideoPlayerHandler {
+  play(): void;
+  stop(): void;
+  getCurrentTime(): void;
+  addVideo(video: VideoInfoType): void;
+  playNext(): void;
+  resetTimer(): void;
+  seekTo(time: number): void;
+}
+
+class VideoPlayerHandler implements VideoPlayerHandler {
   intervalID: ReturnType<typeof setInterval>;
   isPlaying: boolean = false;
   duration: number = 0;
@@ -39,13 +51,15 @@ class VideoPlayerHandler {
   }
 
   addVideo(video: VideoInfoType) {
-    if (this.queue.length === 0) {
-      this.currentVideo = video;
+    const videoWithID: VideoInfoType = { id: uuidv4(), ...video };
+    // if (this.queue.length === 0) {
+    if (!this.currentVideo) {
+      this.currentVideo = videoWithID;
       console.log(`playing ${this.currentVideo.title}`);
       return;
     }
 
-    this.queue.push(video);
+    this.queue.push(videoWithID);
     console.log(`added ${video.title} to queue`);
   }
 
