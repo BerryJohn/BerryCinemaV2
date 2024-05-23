@@ -8,6 +8,7 @@ export type VideoInfoType = {
   title: string;
   description: string;
   video: VideoData;
+  isPlaying?: boolean;
 };
 
 export type HandshakeDataType = {

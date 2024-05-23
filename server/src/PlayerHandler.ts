@@ -8,6 +8,7 @@ interface VideoPlayerHandler {
   stop(): void;
   getCurrentTime(): void;
   addVideo(video: VideoInfoType): void;
+  removeVideo(videoID: string): void;
   playNext(): void;
   resetTimer(): void;
   seekTo(time: number): void;
@@ -51,32 +52,36 @@ class VideoPlayerHandler implements VideoPlayerHandler {
   }
 
   addVideo(video: VideoInfoType) {
-    const videoWithID: VideoInfoType = { id: uuidv4(), ...video };
-    // if (this.queue.length === 0) {
-    if (!this.currentVideo) {
+    const videoWithID: VideoInfoType = {
+      id: uuidv4(),
+      isPlaying: false,
+      ...video,
+    };
+    if (this.currentVideo === undefined) {
       this.currentVideo = videoWithID;
-      console.log(`playing ${this.currentVideo.title}`);
-      return;
     }
-
     this.queue.push(videoWithID);
-    console.log(`added ${video.title} to queue`);
   }
-
-  playNext() {
-    if (this.queue.length === 0) {
-      console.log("queue is empty");
-      return;
+  removeVideo(videoID: string): void {
+    console.log("removin");
+    if (this.currentVideo.id === videoID) {
+      this.playNext();
     }
 
-    //ogarnij co robi ten ! na końcu
-    this.currentVideo = this.queue.shift()!;
-    console.log(`playing ${this.currentVideo.title}`);
+    this.queue = this.queue.filter((video) => video.id !== videoID);
+  }
+  playNext() {
+    if (this.queue.length <= 1) {
+      console.log("No more videos to play");
+      this.currentVideo = undefined;
+      return;
+    }
+    this.queue.shift();
+    this.currentVideo = this.queue[1];
   }
 
   resetTimer() {
     this.duration = 0;
-    console.log("timer reset");
   }
 
   seekTo(time: number) {

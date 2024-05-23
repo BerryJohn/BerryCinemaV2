@@ -43,7 +43,16 @@ io.on("connection", (socket: Socket) => {
   socket.on("addVideo", (data: VideoInfoType) => {
     try {
       VideoPlayer.addVideo(data);
-      io.emit("videoAdded", VideoPlayer.queue);
+      io.emit("queueUpdate", VideoPlayer.queue);
+    } catch (e) {
+      console.log(e.message);
+    }
+  });
+
+  socket.on("removeVideo", (videoID: string) => {
+    try {
+      VideoPlayer.removeVideo(videoID);
+      io.emit("queueUpdate", VideoPlayer.queue);
     } catch (e) {
       console.log(e.message);
     }
