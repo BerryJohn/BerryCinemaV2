@@ -22,11 +22,15 @@ export const videoPlayerMethods = (set, get): VideoPlayerMethods => ({
   },
   setQueue: (queue: VideoInfoType[]) => {
     set({ queue: queue });
+    set({ currentPlayingVideo: queue[0] });
   },
   addVideoToQueue: (video: VideoInfoType) => {
     set({ queue: [...get().queue, video] });
   },
   removeVideoFromQueue: (video: VideoInfoType) => {
     set({ queue: get().queue.filter((v: VideoInfoType) => v !== video) });
+  },
+  setPlayerProgress: (progress) => {
+    set({ playerProgress: progress });
   },
 });

@@ -5,7 +5,10 @@ export const videoPlayerInitialStates: VideoPlayerState = {
   isServerPlaying: false,
   currentPlayingVideo: null,
   playedSeconds: 0,
-  volume: 0.5,
+  volume: localStorage.getItem("volume")
+    ? parseFloat(localStorage.getItem("volume")!)
+    : 0,
   muted: false,
   queue: [],
+  playerProgress: { played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 },
 };

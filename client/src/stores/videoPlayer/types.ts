@@ -1,3 +1,4 @@
+import { OnProgressProps } from "react-player/base";
 import { VideoInfoType } from "./../../../../common/types";
 
 export interface VideoPlayerState {
@@ -8,6 +9,7 @@ export interface VideoPlayerState {
   volume: number;
   muted: boolean;
   queue: VideoInfoType[];
+  playerProgress: OnProgressProps;
 }
 
 export interface VideoPlayerMethods {
@@ -20,4 +22,5 @@ export interface VideoPlayerMethods {
   setQueue: (queue: VideoInfoType[]) => void;
   addVideoToQueue: (video: VideoInfoType) => void;
   removeVideoFromQueue: (video: VideoInfoType) => void;
+  setPlayerProgress: (progress: OnProgressProps) => void;
 }

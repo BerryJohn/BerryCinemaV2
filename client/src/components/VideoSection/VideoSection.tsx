@@ -1,16 +1,12 @@
-import { useCallback, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import socket from "./../../utils/socket";
 import useVideoPlayerStore from "./../../stores/videoPlayer/store";
-
-const playServerVideo = () => {
-  socket.emit("play");
-};
-
-const stopServerVideo = () => {
-  socket.emit("stop");
-};
+import ReactPlayer from "react-player";
+import Controls from "./Controls";
 
 const VideoSection = () => {
+  const videoPlayerRef = useRef<ReactPlayer>(null);
+
   const isLocallyPlaying = useVideoPlayerStore(
     (store) => store.isLocallyPlaying,
   );
@@ -18,25 +14,14 @@ const VideoSection = () => {
   const setIsServerPlaying = useVideoPlayerStore(
     (store) => store.setIsServerPlaying,
   );
-  const setIsLocallyPlaying = useVideoPlayerStore(
-    (store) => store.setIsLocallyPlaying,
-  );
-
-  const currentPlayingVideo = useVideoPlayerStore(
-    (store) => store.currentPlayingVideo,
+  const setPlayerProgress = useVideoPlayerStore(
+    (store) => store.setPlayerProgress,
   );
 
   const volume = useVideoPlayerStore((store) => store.volume);
-  const muted = useVideoPlayerStore((store) => store.muted);
-  const playedSeconds = useVideoPlayerStore((store) => store.playedSeconds);
-
-  const playVideo = useCallback(() => {
-    setIsLocallyPlaying(true);
-  }, [setIsLocallyPlaying]);
-
-  const stopVideo = useCallback(() => {
-    setIsLocallyPlaying(false);
-  }, [setIsLocallyPlaying]);
+  const currentPlayingVideo = useVideoPlayerStore(
+    (store) => store.currentPlayingVideo,
+  );
 
   useEffect(() => {
     socket.on("videoPlayed", () => {
@@ -51,32 +36,23 @@ const VideoSection = () => {
       socket.off("videoPlayed");
       socket.off("videoStopped");
     };
-  }, []);
+  }, [setIsServerPlaying]);
 
   return (
-    <div className="w-full h-screen bg-black border-zinc-800 border-1 border-b-0">
-      <div className="flex-col">
-        <span>Local Video Player</span>
-        <div>
-          <button onClick={playVideo}>play</button>
-          <button onClick={stopVideo}>stop</button>
-        </div>
-        <div>isLocallyPlaying: {isLocallyPlaying.toString()}</div>
-      </div>
-      <br />
-      <div className="flex-col">
-        <span>Server Video Player</span>
-        <div>
-          <button onClick={playServerVideo}>play</button>
-          <button onClick={stopServerVideo}>stop</button>
-        </div>
-        <div>isServerPlaying: {isServerPlaying.toString()}</div>
-      </div>
-      Volume: {volume} {"  "} Muted: {muted.toString()}
-      <br />
-      Played Seconds: {playedSeconds}
-      <br />
-      {JSON.stringify(currentPlayingVideo)}
+    <div className="w-full h-screen bg-black border-zinc-800 border-1 border-b-0 relative">
+      <ReactPlayer
+        width={"100%"}
+        height={"100%"}
+        className=""
+        volume={volume}
+        url={currentPlayingVideo?.video?.url}
+        playing={isServerPlaying && isLocallyPlaying}
+        ref={videoPlayerRef}
+        onProgress={(state) => {
+          setPlayerProgress(state);
+        }}
+      />
+      <Controls videoPlayerRef={videoPlayerRef} />
     </div>
   );
 };
