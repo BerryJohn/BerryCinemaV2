@@ -1,9 +1,11 @@
+import useVideoPlayerStore from "./../../../../stores/videoPlayer/store";
+
 const Title = () => {
-  return (
-    <div className="bg-gradient-to-b from-black to-transparent h-1/6 p-2 text-2xl">
-      Title
-    </div>
+  const currentPlayingVideo = useVideoPlayerStore(
+    (store) => store.currentPlayingVideo,
   );
+
+  return <>{currentPlayingVideo?.title || ""}</>;
 };
 
 export default Title;

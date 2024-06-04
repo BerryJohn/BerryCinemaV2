@@ -30,6 +30,7 @@ const CentralStatusButton = () => {
         } else {
           playServerVideo();
           setIsLocallyPlaying(true);
+          socket.emit("syncTime");
         }
       }}
     >

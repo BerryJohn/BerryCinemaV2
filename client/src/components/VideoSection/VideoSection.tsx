@@ -24,6 +24,13 @@ const VideoSection = () => {
   );
 
   useEffect(() => {
+    socket.on("currentVideoTime", (time: number) => {
+      videoPlayerRef.current?.seekTo(time, "seconds");
+      console.log("sync");
+    });
+  }, [videoPlayerRef]);
+
+  useEffect(() => {
     socket.on("videoPlayed", () => {
       setIsServerPlaying(true);
     });

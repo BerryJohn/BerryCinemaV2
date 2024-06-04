@@ -17,6 +17,7 @@ interface VideoPlayerHandler {
 class VideoPlayerHandler implements VideoPlayerHandler {
   intervalID: ReturnType<typeof setInterval>;
   isPlaying: boolean = false;
+  previusDate: number;
   duration: number = 0;
   currentVideo: VideoInfoType;
   queue: VideoInfoType[] = [];
@@ -30,10 +31,14 @@ class VideoPlayerHandler implements VideoPlayerHandler {
     }
 
     this.isPlaying = true;
+    this.previusDate = Date.now();
 
     this.intervalID = setInterval(() => {
       console.log("playing " + this.duration);
-      this.duration += 1;
+      const currentDate = Date.now();
+      const timeDiffInMiliseconds = (currentDate - this.previusDate) / 1000;
+      this.previusDate = currentDate;
+      this.duration += timeDiffInMiliseconds;
     }, DURATION);
   }
 
@@ -48,7 +53,7 @@ class VideoPlayerHandler implements VideoPlayerHandler {
   }
 
   getCurrentTime() {
-    console.log(this.duration);
+    return this.duration;
   }
 
   addVideo(video: VideoInfoType) {
@@ -63,7 +68,7 @@ class VideoPlayerHandler implements VideoPlayerHandler {
     this.queue.push(videoWithID);
   }
   removeVideo(videoID: string): void {
-    console.log("removin");
+    console.log("removin " + videoID);
     if (this.currentVideo.id === videoID) {
       this.playNext();
     }

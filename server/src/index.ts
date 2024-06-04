@@ -57,6 +57,14 @@ io.on("connection", (socket: Socket) => {
       console.log(e.message);
     }
   });
+
+  socket.on("syncTime", () => {
+    try {
+      io.emit("currentVideoTime", VideoPlayer.getCurrentTime());
+    } catch (e) {
+      console.log(e.message);
+    }
+  });
 });
 
 httpServer.listen(3000);

@@ -15,6 +15,7 @@ const Playlist = () => {
   }, [queue]);
 
   const removeVideo = useCallback((videoId: string) => {
+    console.log(videoId);
     socket.emit("removeVideo", videoId);
   }, []);
 
