@@ -12,7 +12,7 @@ const PlaylistElement = ({ video, index }: PlaylistElementProps) => {
 
   return (
     <div
-      className={`group h-40  bg-slate-800 rounded-lg overflow-hidden flex ${index === 0 ? "bg-gradient-to-r from-slate-900 to-indigo-900" : ""}`}
+      className={`group h-40 bg-slate-800 rounded-lg overflow-hidden flex ${index === 0 ? "bg-gradient-to-r from-slate-900 to-indigo-900" : ""}`}
     >
       <img
         className="h-full w-1/4 object-cover"
@@ -22,7 +22,7 @@ const PlaylistElement = ({ video, index }: PlaylistElementProps) => {
         }
         alt="thumbnail"
       />
-      <div className="px-3 py-6 w-full h-full relative flex flex-col content-end justify-between">
+      <div className="px-3 py-4 w-full h-full relative flex flex-col content-end justify-between">
         <div className="w-full h-1/4 text-2xl">{video.title}</div>
         <div className="flex flex-col content-end justify-end">
           <button
