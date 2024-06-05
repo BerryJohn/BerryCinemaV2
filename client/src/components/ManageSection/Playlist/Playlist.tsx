@@ -2,6 +2,9 @@ import { useCallback, useEffect, useMemo } from "react";
 import useVideoPlayerStore from "./../../../stores/videoPlayer/store";
 import { secondsToHms } from "./../../../utils/helpers";
 import socket from ".././../../utils/socket";
+import { FaRegListAlt } from "react-icons/fa";
+import { FaRegClock } from "react-icons/fa";
+import PlaylistElement from "./PlaylistElement";
 
 const Playlist = () => {
   const queue = useVideoPlayerStore((state) => state.queue);
@@ -14,11 +17,6 @@ const Playlist = () => {
     return secondsToHms(seconds);
   }, [queue]);
 
-  const removeVideo = useCallback((videoId: string) => {
-    console.log(videoId);
-    socket.emit("removeVideo", videoId);
-  }, []);
-
   useEffect(() => {
     socket.on("queueUpdate", (queue) => {
       setQueue(queue);
@@ -29,29 +27,26 @@ const Playlist = () => {
   }, [setQueue]);
 
   return (
-    <div className="border-red-900 border col-span-2 col-start-1">
-      <div className="flex items-center gap-2">
+    <div className="col-span-2 col-start-1 p-1 px-4">
+      <div className="flex items-end gap-4">
         <span className="text-4xl">Playlist</span>
         <div className="divide-y divide-gray-400 " />
-        <span className="text-xl">{queue.length}</span>
-        <span className="text-xl">{queueDuration}</span>
+        <span className="text-xl flex justify-center items-center gap-2">
+          <FaRegListAlt />
+          {queue.length}
+        </span>
+        <span className="text-xl flex justify-center items-center gap-2">
+          <FaRegClock />
+          {queueDuration}
+        </span>
       </div>
-      <div className="flex-col gap-4">
-        {queue.map((video) => (
-          <div
-            className="border-red-900 border h-12"
+      <div className="flex flex-col gap-4 my-6">
+        {queue.map((video, index) => (
+          <PlaylistElement
             key={`video_playlist_${video.id}`}
-          >
-            <span>{video.title}</span> <br />
-            <span>{video.id}</span>
-            <button
-              onClick={() => {
-                removeVideo(video.id ?? "");
-              }}
-            >
-              Remove
-            </button>
-          </div>
+            video={video}
+            index={index}
+          />
         ))}
       </div>
     </div>
