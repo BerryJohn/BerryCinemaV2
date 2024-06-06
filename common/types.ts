@@ -5,6 +5,7 @@ type VideoData = {
 
 export type VideoInfoType = {
   id?: string;
+  thumbnail?: string;
   title: string;
   description: string;
   video: VideoData;

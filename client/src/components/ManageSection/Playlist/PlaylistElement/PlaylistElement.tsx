@@ -6,7 +6,6 @@ import { secondsToHms } from "../../../../utils/helpers";
 
 const PlaylistElement = ({ video, index }: PlaylistElementProps) => {
   const removeVideo = useCallback((videoId: string) => {
-    console.log(videoId);
     socket.emit("removeVideo", videoId);
   }, []);
 
@@ -15,15 +14,18 @@ const PlaylistElement = ({ video, index }: PlaylistElementProps) => {
       className={`group h-40 bg-slate-800 rounded-lg overflow-hidden flex ${index === 0 ? "bg-gradient-to-r from-slate-900 to-indigo-900" : ""}`}
     >
       <img
-        className="h-full w-1/4 object-cover"
+        className={`h-full w-full max-w-64 object-cover bg-black ${video?.thumbnail ? "" : "object-scale-down"}`}
         src={
           video?.thumbnail ??
-          "https://static-cdn.jtvnw.net/jtv_user_pictures/c753fae5-ea58-47a5-afe8-6fedaba4b46b-profile_image-300x300.png"
+          "https://cdn.7tv.app/emote/603caa69faf3a00014dff0b1/4x.webp"
         }
         alt="thumbnail"
       />
       <div className="px-3 py-4 w-full h-full relative flex flex-col content-end justify-between">
         <div className="w-full h-1/4 text-2xl">{video.title}</div>
+        <div className="w-full h-3/4 text-sm opacity-70 group-hover:opacity-100">
+          {video.description}
+        </div>
         <div className="flex flex-col content-end justify-end">
           <button
             className="opacity-70 hover:opacity-100 absolute top-3 right-3 p-2 bg-slate-500 rounded-full hover:bg-red-600 transition-colors duration-300 ease-in-out"

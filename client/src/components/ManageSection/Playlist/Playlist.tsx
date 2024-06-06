@@ -48,6 +48,17 @@ const Playlist = () => {
             index={index}
           />
         ))}
+        {queue.length === 0 && (
+          <div className="text-center text-lg h-60 flex justify-center items-center">
+            <div className="pr-4">
+              <img
+                src="https://cdn.7tv.app/emote/60ae52bf9986a00349d753f0/4x.png"
+                className="w-12 h-12"
+              />
+            </div>
+            There are no videos in the playlist
+          </div>
+        )}
       </div>
     </div>
   );

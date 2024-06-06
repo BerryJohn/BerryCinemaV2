@@ -3,6 +3,15 @@ import { v4 as uuidv4 } from "uuid";
 
 const DURATION = 1000;
 
+const getThumbnail = (url: string) => {
+  let thumbnail = undefined;
+  if (url.includes("youtube.com")) {
+    const videoID = url.split("v=")[1];
+    thumbnail = `https://img.youtube.com/vi/${videoID}/0.jpg`;
+  }
+  return thumbnail;
+};
+
 interface VideoPlayerHandler {
   play(): void;
   stop(): void;
@@ -34,7 +43,6 @@ class VideoPlayerHandler implements VideoPlayerHandler {
     this.previusDate = Date.now();
 
     this.intervalID = setInterval(() => {
-      console.log("playing " + this.duration);
       const currentDate = Date.now();
       const timeDiffInMiliseconds = (currentDate - this.previusDate) / 1000;
       this.previusDate = currentDate;
@@ -44,12 +52,8 @@ class VideoPlayerHandler implements VideoPlayerHandler {
 
   stop() {
     if (!this.isPlaying) throw new Error("Already stopped");
-
     clearInterval(this.intervalID);
-
     this.isPlaying = false;
-
-    console.log("stopped");
   }
 
   getCurrentTime() {
@@ -60,6 +64,7 @@ class VideoPlayerHandler implements VideoPlayerHandler {
     const videoWithID: VideoInfoType = {
       id: uuidv4(),
       isPlaying: false,
+      thumbnail: getThumbnail(video.video.url),
       ...video,
     };
     if (this.currentVideo === undefined) {
