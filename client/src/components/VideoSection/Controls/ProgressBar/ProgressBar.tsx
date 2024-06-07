@@ -1,39 +1,21 @@
 import useVideoPlayerStore from "./../../../../stores/videoPlayer/store";
+import ProgressBarProps from "./types";
 
 const ProgressBar = ({ videoPlayerRef }: ProgressBarProps) => {
   const playerProgress = useVideoPlayerStore((store) => store.playerProgress);
   const currentPlayingVideo = useVideoPlayerStore(
     (store) => store.currentPlayingVideo,
   );
-  console.log(playerProgress);
+
   return (
     <input
       type="range"
       min="0"
       max={currentPlayingVideo?.video.duration ?? 0}
       value={playerProgress.playedSeconds}
-      onChange={(e) => videoPlayerRef.current.seekTo(e.target.value)}
-      className="w-full"
+      onChange={(e) => videoPlayerRef.current?.seekTo(Number(e.target.value))}
+      className="w-full h-1 accent-indigo-500 hover:accent-indigo-500 focus:accent-indigo-600 cursor-pointer"
     />
-    // <div className="h-3 w-full bg-black">
-    //   {/* Loaded  */}
-    //   <div
-    //     className="h-full w-1/2 bg-purple-700"
-    //     style={{
-    //       width: `${playerProgress.loaded * 100}%`,
-    //       transition: "width 0.1s",
-    //     }}
-    //   >
-    //     {/* Viewed */}
-    //     <div
-    //       className="h-full w-1/6 bg-orange-500"
-    //       style={{
-    //         width: `${playerProgress.played * 100}%`,
-    //         transition: "width 0.1s",
-    //       }}
-    //     ></div>
-    //   </div>
-    // </div>
   );
 };
 

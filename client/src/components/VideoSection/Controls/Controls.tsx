@@ -1,10 +1,9 @@
 import useVideoPlayerStore from "./../../../stores/videoPlayer/store";
-import socket from "../../../utils/socket";
+import socket from "./../../../utils/socket";
 import ControlsProps from "./types";
 import { secondsToHms } from "../../../utils/helpers";
-
 import Volume from "./Volume";
-import FullScreen from "./FullScreen";
+import FullScreenButton from "./FullScreen";
 import ProgressBar from "./ProgressBar";
 import StatusButton from "./StatusButton";
 import Title from "./Title";
@@ -12,10 +11,11 @@ import CentralStatusButton from "./CentralStatusButton";
 import { useEffect, useRef, useState } from "react";
 
 const Controls = ({ videoPlayerRef }: ControlsProps) => {
-  const muted = useVideoPlayerStore((store) => store.muted);
-  const playedSeconds = useVideoPlayerStore((store) => store.playedSeconds);
-
   const playerProgress = useVideoPlayerStore((store) => store.playerProgress);
+  const isLocallyPlaying = useVideoPlayerStore(
+    (store) => store.isLocallyPlaying,
+  );
+  const isServerPlaying = useVideoPlayerStore((store) => store.isServerPlaying);
 
   const divRef = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<number | null>(null);
@@ -52,27 +52,30 @@ const Controls = ({ videoPlayerRef }: ControlsProps) => {
   return (
     <div
       ref={divRef}
-      className={`absolute w-screen h-screen top-0 max-h-screen group`}
+      className={`absolute w-screen h-screen top-0 max-h-screen group overflow-hidden`}
     >
       <div
-        className={`bg-gradient-to-b from-black to-transparent h-1/6 p-2 text-2xl invisible  ${!mouseStopped && "group-hover:visible group-hover:opacity-100 transition opacity-0"}`}
+        className={`h-1/6 px-6 py-4 invisible ${(!mouseStopped || (!isServerPlaying && !isLocallyPlaying)) && "group-hover:visible group-hover:opacity-100 transition opacity-0"}`}
       >
         <Title />
       </div>
-
       <div
-        className={`h-4/6 flex justify-center items-center invisible ${!mouseStopped && "group-hover:visible group-hover:opacity-100 transition opacity-0"}`}
+        className={`h-4/6 flex justify-center items-center invisible ${(!mouseStopped || (!isServerPlaying && !isLocallyPlaying)) && "group-hover:visible group-hover:opacity-100 transition opacity-0"}`}
       >
         <CentralStatusButton />
       </div>
       <div
-        className={`h-1/6 flex justify-center items-center gap-3 p-3 invisible ${!mouseStopped && "group-hover:visible group-hover:opacity-100 transition opacity-0"}`}
+        className={`h-1/6 px-6 py-4 flex flex-row flex-wrap justify-center items-center content-end invisible ${(!mouseStopped || (!isServerPlaying && !isLocallyPlaying)) && "group-hover:visible group-hover:opacity-100 transition opacity-0"}`}
       >
-        <StatusButton />
-        <ProgressBar videoPlayerRef={videoPlayerRef} />
-        <div>{secondsToHms(playerProgress.playedSeconds)}</div>
-        <Volume />
-        <FullScreen />
+        <div className="flex w-full justify-center items-center gap-4">
+          <StatusButton />
+          <ProgressBar videoPlayerRef={videoPlayerRef} />
+          <div className="hover:bg-slate-600 hover:bg-opacity-50 rounded-sm flex p-1 duration-75">
+            {secondsToHms(playerProgress.playedSeconds)}
+          </div>
+          <Volume />
+          <FullScreenButton />
+        </div>
       </div>
     </div>
   );

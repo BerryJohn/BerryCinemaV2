@@ -16,9 +16,19 @@ export const videoPlayerMethods = (set, get): VideoPlayerMethods => ({
   },
   setVolume: (volume: number) => {
     set({ volume: volume });
+    set({ muted: false });
   },
   setMuted: (muted: boolean) => {
     set({ muted: muted });
+    if (muted) {
+      localStorage.setItem("volumeBeforeMute", get().volume.toString());
+      set({ volume: 0 });
+    } else {
+      const savedVolume = parseFloat(
+        localStorage.getItem("volumeBeforeMute") ?? "50",
+      );
+      set({ volume: savedVolume });
+    }
   },
   setQueue: (queue: VideoInfoType[]) => {
     set({ queue: queue });
@@ -32,5 +42,8 @@ export const videoPlayerMethods = (set, get): VideoPlayerMethods => ({
   },
   setPlayerProgress: (progress) => {
     set({ playerProgress: progress });
+  },
+  setIsFullScreen: (value: boolean) => {
+    set({ isFullScreen: value });
   },
 });

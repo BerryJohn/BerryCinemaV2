@@ -1,8 +1,7 @@
-import socket from "../../../../utils/socket";
+import socket from "./../../../../utils/socket";
 import useVideoPlayerStore from "./../../../../stores/videoPlayer/store";
-import { IoPlayCircleOutline, IoStopCircleOutline } from "react-icons/io5";
-
-const iconStyle = { width: 35, height: 35 };
+import { TbPlayerPlayFilled, TbPlayerPauseFilled } from "react-icons/tb";
+import { iconStyle } from "./../commonStyles";
 
 const playServerVideo = () => {
   socket.emit("play");
@@ -22,26 +21,25 @@ const StatusButton = () => {
   );
 
   return (
-    <div>
-      <button
-        onClick={() => {
-          if (isServerPlaying && isLocallyPlaying) {
-            stopServerVideo();
-            setIsLocallyPlaying(false);
-          } else {
-            playServerVideo();
-            setIsLocallyPlaying(true);
-            socket.emit("syncTime");
-          }
-        }}
-      >
-        {isServerPlaying && isLocallyPlaying ? (
-          <IoStopCircleOutline style={iconStyle} />
-        ) : (
-          <IoPlayCircleOutline style={iconStyle} />
-        )}
-      </button>
-    </div>
+    <button
+      className="hover:bg-slate-600 hover:bg-opacity-50 rounded-sm flex p-1 duration-75"
+      onClick={() => {
+        if (isServerPlaying && isLocallyPlaying) {
+          stopServerVideo();
+          setIsLocallyPlaying(false);
+        } else {
+          playServerVideo();
+          setIsLocallyPlaying(true);
+          socket.emit("syncTime");
+        }
+      }}
+    >
+      {isServerPlaying && isLocallyPlaying ? (
+        <TbPlayerPauseFilled style={iconStyle} />
+      ) : (
+        <TbPlayerPlayFilled style={iconStyle} />
+      )}
+    </button>
   );
 };
 

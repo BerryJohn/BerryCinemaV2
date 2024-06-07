@@ -1,8 +1,8 @@
 import useVideoPlayerStore from "./../../../../stores/videoPlayer/store";
 import socket from "./../../../../utils/socket";
-import { IoPlayCircleOutline, IoStopCircleOutline } from "react-icons/io5";
+import { TbPlayerPlayFilled, TbPlayerPauseFilled } from "react-icons/tb";
 
-const iconStyle = { width: 100, height: 100 };
+const iconStyle = { width: 50, height: 50 };
 
 const playServerVideo = () => {
   socket.emit("play");
@@ -34,11 +34,13 @@ const CentralStatusButton = () => {
         }
       }}
     >
-      {isServerPlaying && isLocallyPlaying ? (
-        <IoStopCircleOutline style={iconStyle} />
-      ) : (
-        <IoPlayCircleOutline style={iconStyle} />
-      )}
+      <div className="w-24 h-24 bg-slate-600 bg-opacity-50 hover:bg-opacity-80 duration-150 rounded-full flex items-center justify-center">
+        {isServerPlaying && isLocallyPlaying ? (
+          <TbPlayerPauseFilled style={iconStyle} />
+        ) : (
+          <TbPlayerPlayFilled style={iconStyle} />
+        )}
+      </div>
     </button>
   );
 };

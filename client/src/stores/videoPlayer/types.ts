@@ -9,7 +9,8 @@ export interface VideoPlayerState {
   volume: number;
   muted: boolean;
   queue: VideoInfoType[];
-  playerProgress: OnProgressProps;
+  playerProgress: OnProgressProps;,
+  isFullScreen: boolean;
 }
 
 export interface VideoPlayerMethods {
@@ -23,4 +24,5 @@ export interface VideoPlayerMethods {
   addVideoToQueue: (video: VideoInfoType) => void;
   removeVideoFromQueue: (video: VideoInfoType) => void;
   setPlayerProgress: (progress: OnProgressProps) => void;
+  setIsFullScreen: (value: boolean) => void;
 }

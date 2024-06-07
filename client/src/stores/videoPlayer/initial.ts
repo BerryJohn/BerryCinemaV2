@@ -11,4 +11,5 @@ export const videoPlayerInitialStates: VideoPlayerState = {
   muted: false,
   queue: [],
   playerProgress: { played: 0, playedSeconds: 0, loaded: 0, loadedSeconds: 0 },
+  isFullScreen: false,
 };
