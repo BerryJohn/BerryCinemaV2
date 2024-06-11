@@ -18,6 +18,7 @@ const VideoSection = () => {
     (store) => store.setPlayerProgress,
   );
 
+  // const muted = useVideoPlayerStore((store) => store.muted);
   const volume = useVideoPlayerStore((store) => store.volume);
   const currentPlayingVideo = useVideoPlayerStore(
     (store) => store.currentPlayingVideo,

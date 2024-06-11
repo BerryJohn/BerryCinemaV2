@@ -1,14 +1,13 @@
-import { useCallback } from "react";
 import socket from "@Berry/utils/socket";
 import PlaylistElementProps from "./types";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { secondsToHms } from "@Berry/utils/helpers";
 
-const PlaylistElement = ({ video, index }: PlaylistElementProps) => {
-  const removeVideo = useCallback((videoId: string) => {
-    socket.emit("removeVideo", videoId);
-  }, []);
+const removeVideo = (videoId: string) => {
+  socket.emit("removeVideo", videoId);
+};
 
+const PlaylistElement = ({ video, index }: PlaylistElementProps) => {
   return (
     <div
       className={`group h-40 bg-slate-800 rounded-lg overflow-hidden flex ${index === 0 ? "bg-gradient-to-r from-slate-900 to-indigo-900" : ""}`}

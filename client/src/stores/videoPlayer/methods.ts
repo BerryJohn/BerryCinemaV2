@@ -21,6 +21,18 @@ export const videoPlayerMethods = (set, get): VideoPlayerMethods => ({
   },
   setMuted: (muted: boolean) => {
     set({ muted: muted });
+    console.log("test");
+    if (get().isFirstTimeMuted) {
+      console.log("test2");
+      set({ isFirstTimeMuted: false });
+      const volume = localStorage.getItem("volume")
+        ? parseFloat(localStorage.getItem("volume")!)
+        : 50;
+      set({ volume: volume });
+      return;
+    }
+    console.log("test3");
+
     if (muted) {
       localStorage.setItem("volumeBeforeMute", get().volume.toString());
       set({ volume: 0 });
@@ -35,18 +47,18 @@ export const videoPlayerMethods = (set, get): VideoPlayerMethods => ({
     set({ queue: queue });
     if (queue.length > 0) {
       set({ currentPlayingVideo: queue[0] });
+    } else {
+      set({ currentPlayingVideo: null });
+      set({ playedSeconds: 0 });
     }
-  },
-  addVideoToQueue: (video: VideoInfoType) => {
-    set({ queue: [...get().queue, video] });
-  },
-  removeVideoFromQueue: (video: VideoInfoType) => {
-    set({ queue: get().queue.filter((v: VideoInfoType) => v !== video) });
   },
   setPlayerProgress: (progress) => {
     set({ playerProgress: progress });
   },
   setIsFullScreen: (value: boolean) => {
     set({ isFullScreen: value });
+  },
+  setIsFirstTimeMuted(value) {
+    set({ isFirstTimeMuted: value });
   },
 });

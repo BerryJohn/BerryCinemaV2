@@ -5,6 +5,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Main from "./pages/Main";
 import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,30 @@ const App = () => {
     setCurrentPlayingVideo(data.currentVideo);
     setPlayedSeconds(data.playedSeconds);
   });
+
+  useEffect(() => {
+    socket.on("videoPlayed", () => {
+      setIsServerPlaying(true);
+    });
+
+    socket.on("videoStopped", () => {
+      setIsServerPlaying(false);
+    });
+
+    return () => {
+      socket.off("videoPlayed");
+      socket.off("videoStopped");
+    };
+  }, [setIsServerPlaying]);
+
+  useEffect(() => {
+    socket.on("queueUpdate", (queue) => {
+      setQueue(queue);
+    });
+    return () => {
+      socket.off("queueUpdate");
+    };
+  }, [setQueue]);
 
   return (
     <main className="w-full min-h-screen h-auto text-white bg-slate-900">

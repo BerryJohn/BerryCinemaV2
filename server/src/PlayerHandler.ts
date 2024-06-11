@@ -31,6 +31,8 @@ class VideoPlayerHandler implements VideoPlayerHandler {
   currentVideo: VideoInfoType;
   queue: VideoInfoType[] = [];
 
+  DEBUG_MODE: boolean = true;
+
   play() {
     if (!this.currentVideo || this.currentVideo.video.url === "") {
       throw new Error("No video to play");
@@ -48,12 +50,26 @@ class VideoPlayerHandler implements VideoPlayerHandler {
       this.previusDate = currentDate;
       this.duration += timeDiffInMiliseconds;
     }, DURATION);
+
+    if (this.DEBUG_MODE) {
+      console.log("------PLAY COMMAND------");
+      console.log(`Playing video: ${this.currentVideo.title}`);
+      console.log(`Duration: ${this.duration}`);
+      console.log("--------------------");
+    }
   }
 
   stop() {
     if (!this.isPlaying) throw new Error("Already stopped");
     clearInterval(this.intervalID);
     this.isPlaying = false;
+
+    if (this.DEBUG_MODE) {
+      console.log("------STOP COMMAND------");
+      console.log(`Stopped video: ${this.currentVideo.title}`);
+      console.log(`Duration: ${this.duration}`);
+      console.log("--------------------");
+    }
   }
 
   getCurrentTime() {
@@ -71,23 +87,52 @@ class VideoPlayerHandler implements VideoPlayerHandler {
       this.currentVideo = videoWithID;
     }
     this.queue.push(videoWithID);
+
+    if (this.DEBUG_MODE) {
+      console.log(`Video with ID ${videoWithID.id} added to queue`);
+      console.log("-------------------------------------------");
+      console.log("Current queue:");
+      this.queue.map((video, index: number) => {
+        console.log(`Video ${index}: ${video.title} - ${video.id}`);
+      });
+      console.log("-------------------------------------------");
+    }
   }
+
   removeVideo(videoID: string): void {
-    console.log("removin " + videoID);
     if (this.currentVideo.id === videoID) {
       this.playNext();
     }
 
     this.queue = this.queue.filter((video) => video.id !== videoID);
+
+    if (this.DEBUG_MODE) {
+      console.log(`Video with ID ${videoID} removed from queue`);
+      console.log("-------------------------------------------");
+      console.log("Current queue:");
+      this.queue.map((video, index: number) => {
+        console.log(`Video ${index}: ${video.title} - ${video.id}`);
+      });
+      if (this.queue.length === 0) console.log("Queue is empty");
+      console.log("-------------------------------------------");
+    }
   }
   playNext() {
     if (this.queue.length <= 1) {
-      console.log("No more videos to play");
       this.currentVideo = undefined;
+      if (this.DEBUG_MODE) {
+        console.log("------Queue is empty-----");
+      }
       return;
     }
     this.queue.shift();
-    this.currentVideo = this.queue[1];
+    this.currentVideo = this.queue[0];
+
+    if (this.DEBUG_MODE) {
+      console.log("------PLAY NEXT VIDEO------");
+      console.log(`Playing next video: ${this.currentVideo.title}`);
+      console.log("---------------------------");
+    }
   }
 
   resetTimer() {
@@ -100,7 +145,10 @@ class VideoPlayerHandler implements VideoPlayerHandler {
     if (time < 0) throw new Error("Seeking time is less than 0");
 
     this.duration = time;
-    console.log(`seeking to ${time}`);
+
+    if (this.DEBUG_MODE) {
+      console.log(`----Seeked to ${time} seconds----`);
+    }
   }
 }
 

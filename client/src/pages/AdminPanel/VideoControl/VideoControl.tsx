@@ -13,37 +13,33 @@ const stopServerVideo = () => {
 
 const VideoControl = () => {
   const isServerPlaying = useVideoPlayerStore((store) => store.isServerPlaying);
-  const setIsServerPlaying = useVideoPlayerStore(
-    (store) => store.setIsServerPlaying,
-  );
-  const setQueue = useVideoPlayerStore((store) => store.setQueue);
   const currentPlayingVideo = useVideoPlayerStore(
     (store) => store.currentPlayingVideo,
   );
 
-  useEffect(() => {
-    socket.on("videoPlayed", () => {
-      setIsServerPlaying(true);
-    });
+  // useEffect(() => {
+  //   socket.on("videoPlayed", () => {
+  //     setIsServerPlaying(true);
+  //   });
 
-    socket.on("videoStopped", () => {
-      setIsServerPlaying(false);
-    });
+  //   socket.on("videoStopped", () => {
+  //     setIsServerPlaying(false);
+  //   });
 
-    return () => {
-      socket.off("videoPlayed");
-      socket.off("videoStopped");
-    };
-  }, [setIsServerPlaying]);
+  //   return () => {
+  //     socket.off("videoPlayed");
+  //     socket.off("videoStopped");
+  //   };
+  // }, [setIsServerPlaying]);
 
-  useEffect(() => {
-    socket.on("queueUpdate", (queue) => {
-      setQueue(queue);
-    });
-    return () => {
-      socket.off("queueUpdate");
-    };
-  }, [setQueue]);
+  // useEffect(() => {
+  //   socket.on("queueUpdate", (queue) => {
+  //     setQueue(queue);
+  //   });
+  //   return () => {
+  //     socket.off("queueUpdate");
+  //   };
+  // }, [setQueue]);
 
   return (
     <div>
