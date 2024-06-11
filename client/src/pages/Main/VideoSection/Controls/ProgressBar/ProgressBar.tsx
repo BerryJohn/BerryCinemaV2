@@ -1,4 +1,4 @@
-import useVideoPlayerStore from "./../../../../stores/videoPlayer/store";
+import useVideoPlayerStore from "@Berry/stores/videoPlayer/store";
 import ProgressBarProps from "./types";
 
 const ProgressBar = ({ videoPlayerRef }: ProgressBarProps) => {

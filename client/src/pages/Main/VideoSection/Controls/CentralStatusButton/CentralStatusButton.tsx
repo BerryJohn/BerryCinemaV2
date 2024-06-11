@@ -1,16 +1,8 @@
-import useVideoPlayerStore from "./../../../../stores/videoPlayer/store";
-import socket from "./../../../../utils/socket";
+import useVideoPlayerStore from "@Berry/stores/videoPlayer/store";
+import socket from "@Berry/utils/socket";
 import { TbPlayerPlayFilled, TbPlayerPauseFilled } from "react-icons/tb";
 
 const iconStyle = { width: 50, height: 50 };
-
-const playServerVideo = () => {
-  socket.emit("play");
-};
-
-const stopServerVideo = () => {
-  socket.emit("stop");
-};
 
 const CentralStatusButton = () => {
   const isServerPlaying = useVideoPlayerStore((store) => store.isServerPlaying);
@@ -25,10 +17,8 @@ const CentralStatusButton = () => {
     <button
       onClick={() => {
         if (isServerPlaying && isLocallyPlaying) {
-          stopServerVideo();
           setIsLocallyPlaying(false);
         } else {
-          playServerVideo();
           setIsLocallyPlaying(true);
           socket.emit("syncTime");
         }

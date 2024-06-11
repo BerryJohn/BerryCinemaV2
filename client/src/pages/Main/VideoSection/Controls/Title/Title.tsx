@@ -1,4 +1,4 @@
-import useVideoPlayerStore from "./../../../../stores/videoPlayer/store";
+import useVideoPlayerStore from "@Berry/stores/videoPlayer/store";
 
 const Title = () => {
   const currentPlayingVideo = useVideoPlayerStore(

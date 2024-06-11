@@ -5,7 +5,7 @@ import {
   IoVolumeMediumOutline,
   IoVolumeHighOutline,
 } from "react-icons/io5";
-import useVideoPlayerStore from "./../../../../stores/videoPlayer/store";
+import useVideoPlayerStore from "@Berry/stores/videoPlayer/store";
 import { ChangeEvent, useCallback } from "react";
 import { iconStyle } from ".././commonStyles";
 

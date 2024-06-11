@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import socket from "./../../utils/socket";
-import useVideoPlayerStore from "./../../stores/videoPlayer/store";
+import socket from "@Berry/utils/socket";
+import useVideoPlayerStore from "@Berry/stores/videoPlayer/store";
 import ReactPlayer from "react-player";
 import Controls from "./Controls";
 import FullScreen from "react-fullscreen-crossbrowser";
@@ -13,9 +13,7 @@ const VideoSection = () => {
     (store) => store.isLocallyPlaying,
   );
   const isServerPlaying = useVideoPlayerStore((store) => store.isServerPlaying);
-  const setIsServerPlaying = useVideoPlayerStore(
-    (store) => store.setIsServerPlaying,
-  );
+
   const setPlayerProgress = useVideoPlayerStore(
     (store) => store.setPlayerProgress,
   );
@@ -30,21 +28,6 @@ const VideoSection = () => {
       videoPlayerRef.current?.seekTo(time, "seconds");
     });
   }, [videoPlayerRef]);
-
-  useEffect(() => {
-    socket.on("videoPlayed", () => {
-      setIsServerPlaying(true);
-    });
-
-    socket.on("videoStopped", () => {
-      setIsServerPlaying(false);
-    });
-
-    return () => {
-      socket.off("videoPlayed");
-      socket.off("videoStopped");
-    };
-  }, [setIsServerPlaying]);
 
   return (
     <div className="w-full h-screen bg-black border-zinc-800 border-1 border-b-0 relative">

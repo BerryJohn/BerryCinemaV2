@@ -1,6 +1,6 @@
 import { IoExpand, IoContract } from "react-icons/io5";
 import { iconStyle } from "./../commonStyles";
-import useVideoPlayerStore from "../../../../stores/videoPlayer/store";
+import useVideoPlayerStore from "@Berry/stores/videoPlayer/store";
 
 const FullScreen = () => {
   const isFullScreen = useVideoPlayerStore((store) => store.isFullScreen);

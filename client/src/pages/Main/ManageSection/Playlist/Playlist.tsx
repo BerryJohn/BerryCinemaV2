@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo } from "react";
-import useVideoPlayerStore from "./../../../stores/videoPlayer/store";
-import { secondsToHms } from "./../../../utils/helpers";
-import socket from ".././../../utils/socket";
+import { useEffect, useMemo } from "react";
+import useVideoPlayerStore from "@Berry/stores/videoPlayer/store";
+import { secondsToHms } from "@Berry/utils/helpers";
+import socket from "@Berry/utils/socket";
 import { FaRegListAlt } from "react-icons/fa";
 import { FaRegClock } from "react-icons/fa";
 import PlaylistElement from "./PlaylistElement";

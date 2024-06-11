@@ -10,6 +10,7 @@ export const videoPlayerMethods = (set, get): VideoPlayerMethods => ({
   },
   setCurrentPlayingVideo: (video: VideoInfoType) => {
     set({ currentPlayingVideo: video });
+    set({ playedSeconds: 0 });
   },
   setPlayedSeconds: (seconds: number) => {
     set({ playedSeconds: seconds });
@@ -32,7 +33,9 @@ export const videoPlayerMethods = (set, get): VideoPlayerMethods => ({
   },
   setQueue: (queue: VideoInfoType[]) => {
     set({ queue: queue });
-    set({ currentPlayingVideo: queue[0] });
+    if (queue.length > 0) {
+      set({ currentPlayingVideo: queue[0] });
+    }
   },
   addVideoToQueue: (video: VideoInfoType) => {
     set({ queue: [...get().queue, video] });

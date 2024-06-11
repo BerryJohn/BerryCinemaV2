@@ -1,5 +1,5 @@
 import { ChangeEvent, MutableRefObject, useRef, useState } from "react";
-import socket from "./../../../utils/socket";
+import socket from "@Berry/utils/socket";
 import ReactPlayer from "react-player";
 
 type ErrorFormType = {

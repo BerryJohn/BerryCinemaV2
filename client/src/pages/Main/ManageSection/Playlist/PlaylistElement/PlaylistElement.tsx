@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import socket from "./../../../../utils/socket";
+import socket from "@Berry/utils/socket";
 import PlaylistElementProps from "./types";
 import { RiDeleteBin2Line } from "react-icons/ri";
-import { secondsToHms } from "../../../../utils/helpers";
+import { secondsToHms } from "@Berry/utils/helpers";
 
 const PlaylistElement = ({ video, index }: PlaylistElementProps) => {
   const removeVideo = useCallback((videoId: string) => {

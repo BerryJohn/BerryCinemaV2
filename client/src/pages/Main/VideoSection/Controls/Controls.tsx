@@ -1,7 +1,6 @@
-import useVideoPlayerStore from "./../../../stores/videoPlayer/store";
-import socket from "./../../../utils/socket";
+import useVideoPlayerStore from "@Berry/stores/videoPlayer/store";
 import ControlsProps from "./types";
-import { secondsToHms } from "../../../utils/helpers";
+import { secondsToHms } from "@Berry/utils/helpers";
 import Volume from "./Volume";
 import FullScreenButton from "./FullScreen";
 import ProgressBar from "./ProgressBar";

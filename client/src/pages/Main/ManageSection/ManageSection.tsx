@@ -1,5 +1,5 @@
 import Playlist from "./Playlist";
-import socket from "./../../utils/socket";
+import socket from "@Berry/utils/socket";
 import { useEffect, useState } from "react";
 import AddVideoForm from "./AddVideoForm";
 
