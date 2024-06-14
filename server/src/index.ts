@@ -12,7 +12,7 @@ const options = {
 };
 const io = new Server(httpServer, options);
 
-const VideoPlayer = new VideoPlayerHandler();
+const VideoPlayer = new VideoPlayerHandler(io);
 
 io.on("connection", (socket: Socket) => {
   socket.emit("connected", {
@@ -61,6 +61,15 @@ io.on("connection", (socket: Socket) => {
   socket.on("syncTime", () => {
     try {
       io.emit("currentVideoTime", VideoPlayer.getCurrentTime());
+    } catch (e) {
+      console.log(e.message);
+    }
+  });
+
+  socket.on("reset", () => {
+    try {
+      io.emit("reset");
+      VideoPlayer.reset();
     } catch (e) {
       console.log(e.message);
     }

@@ -58,12 +58,20 @@ const App = () => {
 
   useEffect(() => {
     socket.on("queueUpdate", (queue) => {
+      console.log(queue);
       setQueue(queue);
     });
     return () => {
       socket.off("queueUpdate");
     };
   }, [setQueue]);
+
+  // useEffect(() => {
+  //   socket.on("videoEnded", (queue) => {
+  //     console.log(queue);
+  //     setQueue(queue);
+  //   });
+  // }, []);
 
   return (
     <main className="w-full min-h-screen h-auto text-white bg-slate-900">

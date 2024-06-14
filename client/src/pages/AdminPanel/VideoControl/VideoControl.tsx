@@ -11,38 +11,18 @@ const stopServerVideo = () => {
   socket.emit("stop");
 };
 
+const resetServerVideo = () => {
+  socket.emit("reset");
+};
+
 const VideoControl = () => {
   const isServerPlaying = useVideoPlayerStore((store) => store.isServerPlaying);
   const currentPlayingVideo = useVideoPlayerStore(
     (store) => store.currentPlayingVideo,
   );
 
-  // useEffect(() => {
-  //   socket.on("videoPlayed", () => {
-  //     setIsServerPlaying(true);
-  //   });
-
-  //   socket.on("videoStopped", () => {
-  //     setIsServerPlaying(false);
-  //   });
-
-  //   return () => {
-  //     socket.off("videoPlayed");
-  //     socket.off("videoStopped");
-  //   };
-  // }, [setIsServerPlaying]);
-
-  // useEffect(() => {
-  //   socket.on("queueUpdate", (queue) => {
-  //     setQueue(queue);
-  //   });
-  //   return () => {
-  //     socket.off("queueUpdate");
-  //   };
-  // }, [setQueue]);
-
   return (
-    <div>
+    <div className="p-4 flex flex-col gap-1">
       Video is currently{" "}
       <span className="font-bold text-indigo-500">
         {isServerPlaying ? "playing" : "paused"}
@@ -79,10 +59,13 @@ const VideoControl = () => {
           Pause <TbPlayerPauseFilled />
         </button>
       </div>
-      <div className="flex flex-col">
-        <span>FAQ:</span>
-        <span>Q: i can't play the video</span>
-        <span>A: make sure that the video is added to the server queue</span>
+      <div>
+        <button
+          className={`text-lg flex items-center justify-center gap-2 border border-slate-700 hover:bg-slate-800  rounded-md px-2 py-1 h-12 duration-100 active:bg-slate-600`}
+          onClick={resetServerVideo}
+        >
+          Reset server
+        </button>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import { Socket } from "socket.io";
 import { VideoInfoType } from "./../../common/types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -21,6 +22,8 @@ interface VideoPlayerHandler {
   playNext(): void;
   resetTimer(): void;
   seekTo(time: number): void;
+  socket: Socket;
+  reset(): void;
 }
 
 class VideoPlayerHandler implements VideoPlayerHandler {
@@ -30,8 +33,12 @@ class VideoPlayerHandler implements VideoPlayerHandler {
   duration: number = 0;
   currentVideo: VideoInfoType;
   queue: VideoInfoType[] = [];
-
+  io: any;
   DEBUG_MODE: boolean = true;
+
+  constructor(io: any) {
+    this.io = io;
+  }
 
   play() {
     if (!this.currentVideo || this.currentVideo.video.url === "") {
@@ -49,6 +56,16 @@ class VideoPlayerHandler implements VideoPlayerHandler {
       const timeDiffInMiliseconds = (currentDate - this.previusDate) / 1000;
       this.previusDate = currentDate;
       this.duration += timeDiffInMiliseconds;
+
+      if (this.duration >= this.currentVideo.video.duration) {
+        this.playNext();
+        this.resetTimer();
+        clearInterval(this.intervalID);
+      }
+
+      if (this.DEBUG_MODE) {
+        console.log(`Current time: ${this.duration}`);
+      }
     }, DURATION);
 
     if (this.DEBUG_MODE) {
@@ -148,6 +165,21 @@ class VideoPlayerHandler implements VideoPlayerHandler {
 
     if (this.DEBUG_MODE) {
       console.log(`----Seeked to ${time} seconds----`);
+    }
+  }
+
+  reset() {
+    this.isPlaying = false;
+    this.previusDate = 0;
+    this.duration = 0;
+    this.currentVideo = undefined;
+    this.queue = [];
+    clearInterval(this.intervalID);
+
+    if (this.DEBUG_MODE) {
+      console.log("------RESET COMMAND------");
+      console.log("Player reseted");
+      console.log("--------------------");
     }
   }
 }

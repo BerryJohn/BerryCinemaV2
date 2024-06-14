@@ -18,7 +18,6 @@ const VideoSection = () => {
     (store) => store.setPlayerProgress,
   );
 
-  // const muted = useVideoPlayerStore((store) => store.muted);
   const volume = useVideoPlayerStore((store) => store.volume);
   const currentPlayingVideo = useVideoPlayerStore(
     (store) => store.currentPlayingVideo,
@@ -28,6 +27,10 @@ const VideoSection = () => {
     socket.on("currentVideoTime", (time: number) => {
       videoPlayerRef.current?.seekTo(time, "seconds");
     });
+
+    return () => {
+      socket.off("currentVideoTime");
+    };
   }, [videoPlayerRef]);
 
   return (
@@ -43,6 +46,9 @@ const VideoSection = () => {
           ref={videoPlayerRef}
           onProgress={(state) => {
             setPlayerProgress(state);
+          }}
+          onReady={() => {
+            socket.emit("syncTime");
           }}
         />
         <Controls videoPlayerRef={videoPlayerRef} />

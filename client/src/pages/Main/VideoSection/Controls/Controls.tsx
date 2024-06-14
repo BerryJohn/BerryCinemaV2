@@ -19,6 +19,7 @@ const Controls = ({ videoPlayerRef }: ControlsProps) => {
   const divRef = useRef<HTMLDivElement | null>(null);
   const timerRef = useRef<number | null>(null);
   const [mouseStopped, setMouseStopped] = useState(true);
+  const playedSeconds = useVideoPlayerStore((store) => store.playedSeconds);
 
   const handleMouseMove = () => {
     if (timerRef.current !== null) {
@@ -46,6 +47,13 @@ const Controls = ({ videoPlayerRef }: ControlsProps) => {
         clearTimeout(timerRef.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    if (videoPlayerRef.current) {
+      console.log("playedSeconds", playedSeconds);
+      videoPlayerRef.current.seekTo(playedSeconds, "seconds");
+    }
   }, []);
 
   return (
